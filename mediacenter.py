@@ -16,7 +16,7 @@ try:
 except ImportError:
     HAS_REQUESTS = False
 
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 VERSION_DATE = "2025-06-19"
 UPDATE_URL = "https://raw.githubusercontent.com/studio-justin-braun/MediaCenterPi/main/mediacenter.py"
 
@@ -160,6 +160,19 @@ class Toplevel1:
         self.Label4.configure(highlightbackground="#d9d9d9")
         self.Label4.configure(highlightcolor="#000000")
         self.Label4.configure(text='''All settings are stored in local.conf''')
+
+        self.ButtonQuit = tk.Button(self.top)
+        self.ButtonQuit.place(relx=0.027, rely=0.906, height=21, width=21)
+        self.ButtonQuit.configure(activebackground="#d9d9d9")
+        self.ButtonQuit.configure(activeforeground="black")
+        self.ButtonQuit.configure(background="#d9d9d9")
+        self.ButtonQuit.configure(disabledforeground="#a3a3a3")
+        self.ButtonQuit.configure(font="-family {Segoe UI} -size 9 -weight bold")
+        self.ButtonQuit.configure(foreground="#000000")
+        self.ButtonQuit.configure(highlightbackground="#d9d9d9")
+        self.ButtonQuit.configure(highlightcolor="#000000")
+        self.ButtonQuit.configure(text='✖')
+        self.ButtonQuit.configure(command=self.top.destroy)
 
         self.LabelTitel = tk.Label(self.top)
         self.LabelTitel.place(relx=0.36, rely=-0.006, height=31, width=134)

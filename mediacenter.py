@@ -9,16 +9,14 @@ from datetime import datetime
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 from configparser import ConfigParser
-import requests
+try:
+    import requests
+    HAS_REQUESTS = True
+except ImportError:
+    HAS_REQUESTS = False
 
 VERSION = "0.1.0"
 UPDATE_URL = "https://raw.githubusercontent.com/studio-justin-braun/MediaCenterPi/main/mediacenter.py"
-
-try:
-    import pyudev
-    USE_UDEV = True
-except ImportError:
-    USE_UDEV = False
 
 try:
     import pyudev
@@ -343,6 +341,8 @@ def update_sources():
         source_var.set(mounts[0] if mounts else "")
 
 def check_for_updates():
+    if not HAS_REQUESTS:
+        return
     try:
         resp = requests.get(UPDATE_URL, timeout=5)
         remote_version = None
@@ -477,12 +477,16 @@ def refresh_user_list():
         else:
             btn.configure(text="Not defined", state="disabled")
 
-refresh_user_list()
-update_sources()
-start_usb_monitor()
-check_for_updates()
+def main():
+    refresh_user_list()
+    update_sources()
+    start_usb_monitor()
+    if HAS_REQUESTS:
+        check_for_updates()
+    event_label.configure(
+        text=config["GENERAL"].get("event_title", "Unbenannte Veranstaltung")
+    )
+    root.mainloop()
 
-main
-event_label.configure(text=config["GENERAL"].get("event_title", "Unbenannte Veranstaltung"))
-
-root.mainloop()
+if __name__ == "__main__":
+    main()

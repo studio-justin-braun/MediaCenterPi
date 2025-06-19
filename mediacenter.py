@@ -480,7 +480,6 @@ def refresh_user_list():
 refresh_user_list()
 update_sources()
 start_usb_monitor()
-7kg8z7-codex/analyse-mediacenter.py-auf-verbesserungen
 check_for_updates()
 
 main

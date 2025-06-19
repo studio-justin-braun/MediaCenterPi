@@ -16,7 +16,7 @@ try:
 except ImportError:
     HAS_REQUESTS = False
 
-VERSION = "0.1.0"
+VERSION = "1.1.0"
 VERSION_DATE = "2025-06-19"
 UPDATE_URL = "https://raw.githubusercontent.com/studio-justin-braun/MediaCenterPi/main/mediacenter.py"
 
@@ -354,8 +354,8 @@ def check_for_updates():
                 break
         if remote_version and remote_version != VERSION:
             if messagebox.askyesno(
-                "Update verfügbar",
-                f"Version {remote_version} ist verfügbar. Jetzt installieren?",
+                "Update available",
+                f"Version {remote_version} is available. Install now?",
             ):
                 result = subprocess.run([
                     "git",
@@ -365,12 +365,12 @@ def check_for_updates():
                 if result.returncode == 0:
                     messagebox.showinfo(
                         "Update",
-                        "Update installiert. Bitte Programm neu starten.",
+                        "Update installed. Please restart the program.",
                     )
                 else:
                     messagebox.showerror(
-                        "Update fehlgeschlagen",
-                        result.stderr or "Unbekannter Fehler",
+                        "Update failed",
+                        result.stderr or "Unknown error",
                     )
     except Exception as e:
         print("Update check failed:", e)
@@ -379,11 +379,11 @@ def copy_with_progress(src_dir, dst_dir, user, source):
     try:
         files = os.listdir(src_dir)
     except Exception as e:
-        messagebox.showerror("Fehler beim Lesen", f"{src_dir} konnte nicht gelesen werden:\n{str(e)}")
+        messagebox.showerror("Reading errors", f"{src_dir} could not be read:\n{str(e)}")
         return
 
     if not files:
-        messagebox.showinfo("Keine Dateien", "Keine Dateien im Quelllaufwerk gefunden.")
+        messagebox.showinfo("No files", "No files found on the source drive.")
         return
 
     os.makedirs(dst_dir, exist_ok=True)
@@ -392,7 +392,7 @@ def copy_with_progress(src_dir, dst_dir, user, source):
         try:
             shutil.move(os.path.join(src_dir, f), os.path.join(dst_dir, f))
         except Exception as e:
-            messagebox.showerror("Fehler beim Kopieren", f"Datei konnte nicht verschoben werden:\n{f}\n{str(e)}")
+            messagebox.showerror("Error copying", f"File could not be moved:\n{f}\n{str(e)}")
         progress["value"] = idx
         root.update_idletasks()
     log_transfer(user, source, dst_dir, len(files))
@@ -402,7 +402,7 @@ def copy_with_progress(src_dir, dst_dir, user, source):
 def on_user_button(u):
     src = source_var.get()
     if not src or not os.path.ismount(src):
-        messagebox.showerror("Fehler", f"{src} ist nicht gemountet.")
+        messagebox.showerror("Error", f"{src} is not mounted.")
         return
     event = config["GENERAL"].get("event_title")
     dest = os.path.join(SSD_BASE, event, u)
@@ -483,7 +483,7 @@ def refresh_user_list():
 def main():
     messagebox.showinfo(
         "MediaCenterPi",
-        f"Studio Justin Braun bedankt sich f\u00fcr die Nutzung von MediaCenter.\nVersion {VERSION} vom {VERSION_DATE}",
+        f"Studio Justin Braun thanks you for using MediaCenter.\nVersion {VERSION} from {VERSION_DATE}",
     )
     refresh_user_list()
     update_sources()
@@ -491,7 +491,7 @@ def main():
     if HAS_REQUESTS:
         check_for_updates()
     event_label.configure(
-        text=config["GENERAL"].get("event_title", "Unbenannte Veranstaltung")
+        text=config["GENERAL"].get("event_title", "Unnamed event")
     )
     root.mainloop()
 

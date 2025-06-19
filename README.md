@@ -22,6 +22,9 @@ Perfect for **event photographers** or **videographers** who need a **fast, touc
 - 🧑 Supports up to 9 user profiles (customizable)
 - 🛠️ Simple configuration via `local.conf`
 - 🖲️ Designed for **touchscreen use**, no keyboard/mouse required
+- 🔄 Checks for updates on startup and can install them automatically
+- ⚙️ Opens `local.conf` in a text editor for easy adjustments
+- ⏏️ Buttons to eject disks and restart the app
 
 ---
 
@@ -32,15 +35,17 @@ Perfect for **event photographers** or **videographers** who need a **fast, touc
 - Raspberry Pi 4 running **Raspberry Pi OS Desktop**
 - Touch display (at least 3.5" 320x480 px)
 - Python 3.x
-- `tkinter`, `ttk`, `shutil`, `subprocess`, `configparser` (included with most distros)
+- `tkinter`, `ttk`, `shutil`, `subprocess`, `configparser` (usually preinstalled)
+- `pyudev` for real-time USB detection *(installed by `install.sh`)*
+- `requests` for the update feature *(installed by `install.sh`)*
 
 ### Installation
 
 ```bash
 git clone https://github.com/studio-justin-braun/MediaCenterPi.git
 cd MediaCenterPi
-./install.sh
-python3 mediacenter.py
+./install.sh  # installs dependencies and creates a desktop shortcut
+python3 mediacenter.py  # or use the new shortcut
 ```
 
 ---
@@ -53,6 +58,7 @@ The configuration is stored in `local.conf` and contains:
 - `[USERS]` – list of user buttons shown in the UI
 
 A log file named `transfer.log` is created after each transfer.
+Use the **Settings** button in the GUI to open `local.conf` in a text editor.
 
 ---
 

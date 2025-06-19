@@ -370,21 +370,37 @@ def check_for_updates():
                 "Update available",
                 f"Version {remote_version} is available. Install now?",
             ):
-                result = subprocess.run([
-                    "git",
-                    "pull",
-                    "--ff-only",
-                ], capture_output=True, text=True)
+                repo_dir = os.path.dirname(os.path.abspath(__file__))
+                result = subprocess.run(
+                    ["git", "-C", repo_dir, "pull", "--ff-only"],
+                    capture_output=True,
+                    text=True,
+                )
                 if result.returncode == 0:
                     messagebox.showinfo(
                         "Update",
                         "Update installed. Please restart the program.",
                     )
                 else:
-                    messagebox.showerror(
-                        "Update failed",
-                        result.stderr or "Unknown error",
-                    )
+                    if "not a git repository" in (result.stderr or "").lower():
+                        try:
+                            new_code = requests.get(UPDATE_URL, timeout=5).text
+                            with open(__file__, "w") as f:
+                                f.write(new_code)
+                            messagebox.showinfo(
+                                "Update",
+                                "Update installed. Please restart the program.",
+                            )
+                        except Exception as e2:
+                            messagebox.showerror(
+                                "Update failed",
+                                f"Git pull failed and manual update failed: {e2}",
+                            )
+                    else:
+                        messagebox.showerror(
+                            "Update failed",
+                            result.stderr or "Unknown error",
+                        )
     except Exception as e:
         print("Update check failed:", e)
 

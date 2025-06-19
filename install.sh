@@ -6,7 +6,7 @@ sudo apt-get update
 sudo apt-get install -y python3 python3-pip python3-tk matchbox-keyboard mousepad git
 
 # Install Python dependencies
-pip3 install --user pyudev requests
+pip3 install --user --break-system-packages pyudev requests
 
 # Create desktop shortcut and icon
 ICON_PATH="/usr/share/pixmaps/MediaCenterPi.png"

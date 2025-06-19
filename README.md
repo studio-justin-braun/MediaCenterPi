@@ -38,7 +38,7 @@ Perfect for **event photographers** or **videographers** who need a **fast, touc
 ```bash
 git clone https://github.com/studio-justin-braun/MediaCenterPi.git
 cd MediaCenterPi
-python3 mediacenter_merged.py
+python3 mediacenter.py
 ```
 
 ---
@@ -58,7 +58,7 @@ A log file named `transfer.log` is created after each transfer.
 
 ```
 MediaCenterPi/
-├── mediacenter_merged.py
+├── mediacenter.py
 ├── local.conf
 ├── transfer.log
 ├── screenshot.png

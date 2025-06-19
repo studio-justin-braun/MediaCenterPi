@@ -9,6 +9,16 @@ from datetime import datetime
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 from configparser import ConfigParser
+import requests
+
+VERSION = "0.1.0"
+UPDATE_URL = "https://raw.githubusercontent.com/studio-justin-braun/MediaCenterPi/main/mediacenter.py"
+
+try:
+    import pyudev
+    USE_UDEV = True
+except ImportError:
+    USE_UDEV = False
 
 try:
     import pyudev
@@ -332,6 +342,37 @@ def update_sources():
     if current not in mounts:
         source_var.set(mounts[0] if mounts else "")
 
+def check_for_updates():
+    try:
+        resp = requests.get(UPDATE_URL, timeout=5)
+        remote_version = None
+        for line in resp.text.splitlines():
+            if line.startswith("VERSION ="):
+                remote_version = line.split("=", 1)[1].strip().strip('"')
+                break
+        if remote_version and remote_version != VERSION:
+            if messagebox.askyesno(
+                "Update verfügbar",
+                f"Version {remote_version} ist verfügbar. Jetzt installieren?",
+            ):
+                result = subprocess.run([
+                    "git",
+                    "pull",
+                    "--ff-only",
+                ], capture_output=True, text=True)
+                if result.returncode == 0:
+                    messagebox.showinfo(
+                        "Update",
+                        "Update installiert. Bitte Programm neu starten.",
+                    )
+                else:
+                    messagebox.showerror(
+                        "Update fehlgeschlagen",
+                        result.stderr or "Unbekannter Fehler",
+                    )
+    except Exception as e:
+        print("Update check failed:", e)
+
 def copy_with_progress(src_dir, dst_dir, user, source):
     try:
         files = os.listdir(src_dir)
@@ -439,6 +480,10 @@ def refresh_user_list():
 refresh_user_list()
 update_sources()
 start_usb_monitor()
+7kg8z7-codex/analyse-mediacenter.py-auf-verbesserungen
+check_for_updates()
+
+main
 event_label.configure(text=config["GENERAL"].get("event_title", "Unbenannte Veranstaltung"))
 
 root.mainloop()

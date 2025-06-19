@@ -20,6 +20,12 @@ try:
 except ImportError:
     USE_UDEV = False
 
+try:
+    import pyudev
+    USE_UDEV = True
+except ImportError:
+    USE_UDEV = False
+
 # === Konfiguration ===
 CONFIG_PATH = "local.conf"
 SSD_BASE = "/media/ssd"
@@ -474,7 +480,10 @@ def refresh_user_list():
 refresh_user_list()
 update_sources()
 start_usb_monitor()
+7kg8z7-codex/analyse-mediacenter.py-auf-verbesserungen
 check_for_updates()
+
+main
 event_label.configure(text=config["GENERAL"].get("event_title", "Unbenannte Veranstaltung"))
 
 root.mainloop()

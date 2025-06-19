@@ -370,21 +370,41 @@ def check_for_updates():
                 "Update available",
                 f"Version {remote_version} is available. Install now?",
             ):
-                result = subprocess.run([
-                    "git",
-                    "pull",
-                    "--ff-only",
-                ], capture_output=True, text=True)
-                if result.returncode == 0:
-                    messagebox.showinfo(
-                        "Update",
-                        "Update installed. Please restart the program.",
+                git_check = subprocess.run(
+                    ["git", "rev-parse", "--is-inside-work-tree"],
+                    capture_output=True,
+                    text=True,
+                )
+                if git_check.returncode == 0:
+                    result = subprocess.run(
+                        ["git", "pull", "--ff-only"],
+                        capture_output=True,
+                        text=True,
                     )
+                    if result.returncode == 0:
+                        messagebox.showinfo(
+                            "Update",
+                            "Update installed. Please restart the program.",
+                        )
+                    else:
+                        messagebox.showerror(
+                            "Update failed",
+                            result.stderr or "Unknown error",
+                        )
                 else:
-                    messagebox.showerror(
-                        "Update failed",
-                        result.stderr or "Unknown error",
-                    )
+                    try:
+                        new_content = requests.get(UPDATE_URL, timeout=5).text
+                        with open(__file__, "w", encoding="utf-8") as f:
+                            f.write(new_content)
+                        messagebox.showinfo(
+                            "Update",
+                            "Update installed. Please restart the program.",
+                        )
+                    except Exception as e:
+                        messagebox.showerror(
+                            "Update failed",
+                            str(e),
+                        )
     except Exception as e:
         print("Update check failed:", e)
 

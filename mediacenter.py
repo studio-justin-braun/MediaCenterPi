@@ -16,7 +16,7 @@ try:
 except ImportError:
     HAS_REQUESTS = False
 
-VERSION = "1.2.1"
+VERSION = "1.3.1"
 VERSION_DATE = "2025-06-19"
 UPDATE_URL = "https://raw.githubusercontent.com/studio-justin-braun/MediaCenterPi/main/mediacenter.py"
 

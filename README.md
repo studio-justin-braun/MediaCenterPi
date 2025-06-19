@@ -29,7 +29,8 @@ Perfect for **event photographers** or **videographers** who need a **fast, touc
 
 ### Requirements
 
-- Raspberry Pi 4 (or similar Linux system)
+- Raspberry Pi 4 running **Raspberry Pi OS Desktop**
+- Touch display (at least 3.5" 320x480 px)
 - Python 3.x
 - `tkinter`, `ttk`, `shutil`, `subprocess`, `configparser` (included with most distros)
 
@@ -38,6 +39,7 @@ Perfect for **event photographers** or **videographers** who need a **fast, touc
 ```bash
 git clone https://github.com/studio-justin-braun/MediaCenterPi.git
 cd MediaCenterPi
+./install.sh
 python3 mediacenter.py
 ```
 

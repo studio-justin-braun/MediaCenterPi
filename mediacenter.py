@@ -17,6 +17,7 @@ except ImportError:
     HAS_REQUESTS = False
 
 VERSION = "0.1.0"
+VERSION_DATE = "2025-06-19"
 UPDATE_URL = "https://raw.githubusercontent.com/studio-justin-braun/MediaCenterPi/main/mediacenter.py"
 
 try:
@@ -453,6 +454,7 @@ def open_config_editor():
 
 
 root = tk.Tk()
+root.attributes("-fullscreen", True)
 app = Toplevel1(root)
 
 # GUI-Elemente verbinden
@@ -479,6 +481,10 @@ def refresh_user_list():
             btn.configure(text="Not defined", state="disabled")
 
 def main():
+    messagebox.showinfo(
+        "MediaCenterPi",
+        f"Studio Justin Braun bedankt sich f\u00fcr die Nutzung von MediaCenter.\nVersion {VERSION} vom {VERSION_DATE}",
+    )
     refresh_user_list()
     update_sources()
     start_usb_monitor()

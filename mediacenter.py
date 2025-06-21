@@ -33,6 +33,9 @@ USB_BASE = "/media/usb"
 LOG_FILE = "transfer.log"
 POLL_INTERVAL = 5  # Sekunden
 
+LIFESIGN_CHARS = ['|', '/', '-', '\\']
+lifesign_index = 0
+
 # === Initialisierung ===
 os.makedirs(SSD_BASE, exist_ok=True)
 os.makedirs(USB_BASE, exist_ok=True)
@@ -173,6 +176,18 @@ class Toplevel1:
         self.ButtonQuit.configure(highlightcolor="#000000")
         self.ButtonQuit.configure(text='✖')
         self.ButtonQuit.configure(command=self.top.destroy)
+
+        self.LifeSign = tk.Label(self.top)
+        self.LifeSign.place(relx=0.95, rely=0.906, height=21, width=15)
+        self.LifeSign.configure(activebackground="#d9d9d9")
+        self.LifeSign.configure(activeforeground="black")
+        self.LifeSign.configure(background="#d9d9d9")
+        self.LifeSign.configure(disabledforeground="#a3a3a3")
+        self.LifeSign.configure(font="-family {Segoe UI} -size 9")
+        self.LifeSign.configure(foreground="#000000")
+        self.LifeSign.configure(highlightbackground="#d9d9d9")
+        self.LifeSign.configure(highlightcolor="#000000")
+        self.LifeSign.configure(text='|')
 
         self.LabelTitel = tk.Label(self.top)
         self.LabelTitel.place(relx=0.36, rely=-0.006, height=31, width=134)
@@ -492,6 +507,12 @@ source_menu = app.TComboboxDisk
 progress = app.TProgressbarCopy
 event_label = app.EventTitle
 
+def update_lifesign():
+    global lifesign_index
+    app.LifeSign.configure(text=LIFESIGN_CHARS[lifesign_index])
+    lifesign_index = (lifesign_index + 1) % len(LIFESIGN_CHARS)
+    root.after(300, update_lifesign)
+
 for btn in app.user_buttons:
     btn.configure(command=lambda b=btn: on_user_button(b.cget("text")))
 
@@ -522,6 +543,7 @@ def main():
     event_label.configure(
         text=config["GENERAL"].get("event_title", "Unnamed event")
     )
+    update_lifesign()
     root.mainloop()
 
 if __name__ == "__main__":
